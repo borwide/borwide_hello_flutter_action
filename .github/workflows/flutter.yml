@@ -52,7 +52,8 @@ jobs:
       - run: flutter pub get
       # - run: flutter test
       - run: flutter build ios --release --no-codesign
-  main:
+  
+  build_linux:
     name: Build Flutter App (linux)
     runs-on: ubuntu-latest
     steps:
@@ -194,3 +195,35 @@ jobs:
       #       build/app/outputs/flutter-apk/app-release.apk
       #   env:
       #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+
+  release:
+    needs: build_linux, build_windows, build_androidApk
+    runs-on: ubuntu-latest
+    permissions: write-all
+    # if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+
+    steps:
+    - name: Download all artifacts
+      uses: actions/download-artifact@v4
+      with:
+        path: ./artifacts
+
+    - name: Rename artifacts for unique names
+      run: |
+        # List all directories first for debugging
+        echo "Listing artifacts directory structure:"
+        ls -lR ./artifacts
+        
+    - name: Create Release
+      if: startsWith(github.ref, 'refs/tags/')
+      uses: softprops/action-gh-release@v2
+      with:
+        name: Release ${{ github.ref_name }}
+        draft: false
+        prerelease: false
+        generate_release_notes: true
+        files: |
+          artifacts/*
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
