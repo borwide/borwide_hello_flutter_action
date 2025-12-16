@@ -78,11 +78,7 @@ jobs:
       - name: List build outputs
         run: |
           echo "Build outputs:"
-          ls -la build/
-          ls -la build/liunx/
-          ls -la build/linux/x64/release/
-          ls -la build/linux/x64/release/bundle/
-          ls -la build/linux/x64/release/bundle/hello_flutter_action/
+          ls -lR build/
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
@@ -133,11 +129,11 @@ jobs:
       - name: List build outputs
         run: |
           echo "Build outputs:"
-          ls -la build/
-          ls -la build/windows/
-          ls -la build/windows/x64/
-          ls -la build/windows/x64/runner/
-          ls -la build/windows/x64/runner/Release/
+          ls build/
+          ls build/windows/
+          ls build/windows/x64/
+          ls build/windows/x64/runner/
+          ls build/windows/x64/runner/Release/
           
 
       - name: Upload artifact
