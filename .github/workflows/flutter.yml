@@ -198,7 +198,7 @@ jobs:
 
 
   release:
-    needs: build_linux, build_windows, build_androidApk
+    needs: [build_linux, build_windows, build_androidApk]
     runs-on: ubuntu-latest
     permissions: write-all
     # if: github.event_name == 'push' && github.ref == 'refs/heads/master'
@@ -224,6 +224,6 @@ jobs:
         prerelease: false
         generate_release_notes: true
         files: |
-          artifacts/*
+          artifacts/**/*
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
