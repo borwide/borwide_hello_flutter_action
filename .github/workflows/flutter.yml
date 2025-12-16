@@ -47,7 +47,7 @@ jobs:
           cache: true
           channel: 'stable'
       - run: flutter pub get
-      - run: flutter clean
+      # - run: flutter clean
       - run: |
           flutter build ios --no-codesign
           cd build/ios/iphoneos
@@ -74,12 +74,21 @@ jobs:
       
       - name: Build Linux App
         run: flutter build linux --release
+      
+      - name: List build outputs
+        run: |
+          echo "Build outputs:"
+          ls -la build/
+          ls -la build/liunx/
+          ls -la build/linux/x64/release/
+          ls -la build/linux/x64/release/bundle/
+          ls -la build/linux/x64/release/bundle/hello_flutter_action/
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: "hello_flutter_action_linux_x64"
-          path: /build/linux/x64/release/bundle/hello_flutter_action/**/*
+          path: build/linux/x64/release/bundle/hello_flutter_action/**/*
 
       #- name: Create Release and Upload Windows
       #  if: startsWith(github.ref, 'refs/tags/')
@@ -121,11 +130,21 @@ jobs:
       - name: Build Windows App
         run: flutter build windows --release
 
+      - name: List build outputs
+        run: |
+          echo "Build outputs:"
+          ls -la build/
+          ls -la build/windows/
+          ls -la build/windows/x64/
+          ls -la build/windows/x64/runner/
+          ls -la build/windows/x64/runner/Release/
+          
+
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: "hello_flutter_action_windows_x64"
-          path: /build/windows/x64/runner/Release/**/*      
+          path: build/windows/x64/runner/Release/**/*      
       
       # - name: Create Release and Upload Windows
       #   if: startsWith(github.ref, 'refs/tags/')
@@ -157,7 +176,7 @@ jobs:
           cache: true
           channel: 'stable'
       - run: flutter pub get
-      - run: flutter clean
+      # - run: flutter clean
       - run: flutter build apk --release
       
       - name: List build outputs
@@ -170,7 +189,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: "hello_flutter_action_android_apk"
-          path: /build/app/outputs/flutter-apk/app-release.apk
+          path: build/app/outputs/flutter-apk/app-release.apk
       
       # - name: Create Release and Upload APK
       #   if: startsWith(github.ref, 'refs/tags/')
