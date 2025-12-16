@@ -214,6 +214,10 @@ jobs:
         # List all directories first for debugging
         echo "Listing artifacts directory structure:"
         ls -lR ./artifacts
+        mkdir -p ./release_assets
+        cp ./artifacts/hello_flutter_action_android_apk/app-release.apk ./release_assets/hello_flutter_action_android_apk.apk
+        tar -cjvf ./release_assets/hello_flutter_action_linux_x64.tar.bz2 ./artifacts/hello_flutter_action_linux_x64
+        zip -r ./release_assets/hello_flutter_action_windows_x64.zip ./artifacts/hello_flutter_action_windows_x64 
         
     - name: Create Release
       if: startsWith(github.ref, 'refs/tags/')
@@ -224,6 +228,6 @@ jobs:
         prerelease: false
         generate_release_notes: true
         files: |
-          artifacts/**/*
+          release_assets/*
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
