@@ -54,7 +54,19 @@ jobs:
           ln -s ../Runner.app
           cd ..
           zip -r app.ipa Payload
-
+  
+  build_windows:
+    runs-on: windows-latest
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v4
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+      - run: flutter build windows
+      
   build_androidApk:
     name: Build Flutter App (Android)
     # needs: [flutter_test]
@@ -72,9 +84,9 @@ jobs:
           channel: 'stable'
       - run: flutter pub get
       - run: flutter clean
-      - run: flutter build apk --debug
-      - uses: ncipollo/release-action@v1
-        with:
-          artifacts: "build/app/outputs/apk/debug/*"
-          tag: v1.0.${{ github.run_number}}
-          token: ${{ secrets.TOKEN}}
+      - run: flutter build apk --release
+      #- uses: ncipollo/release-action@v1
+      #  with:
+      #    artifacts: "build/app/outputs/apk/debug/*"
+      #    tag: v1.0.${{ github.run_number}}
+      #    token: ${{ secrets.TOKEN}}
